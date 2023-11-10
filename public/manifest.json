@@ -1,0 +1,44 @@
+{
+  "name": "Easy Copy",
+  "version": "1.0",
+  "description": "非常便利的复制网页上不允许复制内容的功工具",
+  "manifest_version": 3,
+  "icons": {
+    "48": "n48.png",
+    "96": "n96.png"
+  },
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "permissions": [
+    "notifications",
+    "cookies",
+    "contextMenus",
+    "tabs",
+    "storage",
+    "activeTab",
+    "clipboardWrite"
+  ],
+  "action": {
+    "default_icon": {
+      "48": "n48.png",
+      "96": "n96.png"
+    },
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end",
+      "all_frames": false
+      // "exclude_matches": ["*://localhost/*"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+  // "web_accessible_resources": [
+  //   {
+  //     "resources": ["assets/*.js", "assets/*.css", "n48.png", "n96.png"]
+  //   }
+  // ]
+}
