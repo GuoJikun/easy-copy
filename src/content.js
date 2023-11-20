@@ -17,7 +17,7 @@ function createEl() {
     height: "100%",
     "pointer-events": "none",
     transition: "all 0.2s ease-in-out",
-    "background-color": "hsl(123.92deg 91.93% 46.85% / 16%)",
+    "background-color": "hsl(123.92deg 91.93% 46.85% / 18%)",
   };
   setStyle(el, styles);
   document.body.appendChild(el);
