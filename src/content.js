@@ -71,12 +71,8 @@ function handleMessage(ev) {
 }
 
 function createChannel() {
-  const port = chrome.runtime.connect({ name: "content-script" });
-  port.onMessage.addListener((request, sender, sendResponse) => {
-    console.log("request", request);
-    console.log("sender", sender);
-    console.log("sendResponse", sendResponse);
-    // sendResponse();
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    console.log("接收到 background 传来的信息", request);
     handleMessage(request);
   });
 }
