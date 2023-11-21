@@ -1,9 +1,38 @@
 // import { useThrottleFn } from "./utils/index.js";
 
+class Modal {
+  constructor() {
+    const template = `
+      <style></style>
+      <div></div>
+    `;
+    this.shadowRoot = this.attachShadow({ mode: "open" });
+    this.shadowRoot.innerHTML = template.cloneNode(true).content;
+    // this.el = document.createElement("dialog");
+    // this.el.id = "easy_copy_dialog";
+    // this.el.style = `position: fixed;top: 24px;left: 50%;transform: translateX(-50%);z-index: 999999999;`;
+    // document.body.appendChild(this.el);
+  }
+  open() {
+    this.el.setAttribute("open", true);
+  }
+  close() {
+    this.el.setAttribute("open", false);
+  }
+  setContent(content) {
+    this.el.innerHTML = content;
+  }
+}
+
 function createEl() {
   let el = document.querySelector("#easy_copy");
   if (!el) {
     el = document.createElement("div");
+    const dialog = document.createElement("dialog");
+    dialog.id = "easy_copy_dialog";
+    // dialog.setAttribute("open", false);
+    dialog.style = `position: fixed;top: 24px;left: 50%;transform: translateX(-50%);z-index: 999999999;`;
+    document.body.appendChild(dialog);
   }
 
   el.id = "easy_copy";
@@ -12,7 +41,7 @@ function createEl() {
     position: "fixed",
     top: "0",
     left: "0",
-    "z-index": 999999999,
+    "z-index": 999999998,
     width: "100%",
     height: "100%",
     "pointer-events": "none",
@@ -49,10 +78,23 @@ const handleMousemove = (ev) => {
   setStyle(target, style);
 };
 
-const bindMousemoveEvent = (type) => {
-  type
-    ? document.addEventListener("mousemove", handleMousemove)
-    : document.removeEventListener("mousemove", handleMousemove);
+const handleClick = (ev) => {
+  const target = ev.target;
+  const cloneTarget = target.cloneNode(true);
+  document.querySelector("#easy_copy_dialog").innerHTML = cloneTarget.outerHTML;
+};
+
+const bindEvent = () => {
+  document.addEventListener("mousemove", handleMousemove);
+  document.addEventListener("click", handleClick);
+};
+const removeEvent = () => {
+  document.removeEventListener("mousemove", handleMousemove);
+  document.removeEventListener("click", handleClick);
+};
+
+const bindOrRemove = (type) => {
+  type ? bindEvent() : removeEvent();
 };
 
 function handleMessage(ev) {
@@ -67,7 +109,7 @@ function handleMessage(ev) {
     style = { display: "none" };
   }
   setStyle(target, style);
-  bindMousemoveEvent(data.type === "open");
+  bindOrRemove(data.type === "open");
 }
 
 function createChannel() {
