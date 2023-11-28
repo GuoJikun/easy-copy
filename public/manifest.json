@@ -15,7 +15,8 @@
     "tabs",
     "storage",
     "activeTab",
-    "clipboardWrite"
+    "clipboardWrite",
+    "scripting"
   ],
   "action": {
     "default_icon": {
